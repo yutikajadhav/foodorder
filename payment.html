@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/payment.css">
+    <style>
+        .hidden {
+            visibility: hidden;
+            position: absolute;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="login.html">Login</a>
+            <a href="signup.html">Signup</a>
+            <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+            <a href="about.html">About Us</a>
+            <a href="feedback.html">Feedback</a>
+        </nav>
+    </header>
+    
+    <div class="payment-container">
+        <h2>Select Payment Method</h2>
+        <div class="payment-methods">
+            <button type="button" onclick="showPaymentOption('upi')">UPI</button>
+            <button type="button" onclick="showPaymentOption('card')">Card</button>
+            <button type="button" onclick="showPaymentOption('cash')">Cash</button>
+        </div>
+        
+        <form id="payment-form">
+            <div id="upi-section" class="hidden">
+                <label for="upi-id">Enter UPI ID</label>
+                <input type="text" id="upi-id" name="upi-id">
+            </div>
+
+            <div id="card-section" class="hidden">
+                <label for="card-name">Cardholder Name</label>
+                <input type="text" id="card-name" name="card-name">
+                
+                <label for="card-number">Card Number</label>
+                <input type="text" id="card-number" name="card-number" pattern="[0-9]{16}">
+                
+                <label for="expiry-date">Expiry Date</label>
+                <input type="month" id="expiry-date" name="expiry-date">
+                
+                <label for="cvv">CVV</label>
+                <input type="password" id="cvv" name="cvv" pattern="[0-9]{3}">
+            </div>
+
+            <p id="cash-message" class="hidden">You have selected Cash on Delivery.</p>
+            
+            <button type="submit" class="submit-payment">Confirm Payment</button>
+        </form>
+    </div>
+    
+    <script>
+        function showPaymentOption(method) {
+            document.getElementById('upi-id').removeAttribute('required');
+            document.getElementById('card-name').removeAttribute('required');
+            document.getElementById('card-number').removeAttribute('required');
+            document.getElementById('expiry-date').removeAttribute('required');
+            document.getElementById('cvv').removeAttribute('required');
+            
+            document.getElementById('upi-section').classList.add('hidden');
+            document.getElementById('card-section').classList.add('hidden');
+            document.getElementById('cash-message').classList.add('hidden');
+            
+            if (method === 'upi') {
+                document.getElementById('upi-section').classList.remove('hidden');
+                document.getElementById('upi-id').setAttribute('required', 'true');
+            } else if (method === 'card') {
+                document.getElementById('card-section').classList.remove('hidden');
+                document.getElementById('card-name').setAttribute('required', 'true');
+                document.getElementById('card-number').setAttribute('required', 'true');
+                document.getElementById('expiry-date').setAttribute('required', 'true');
+                document.getElementById('cvv').setAttribute('required', 'true');
+            } else if (method === 'cash') {
+                document.getElementById('cash-message').classList.remove('hidden');
+            }
+        }
+        
+        document.getElementById('payment-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            alert('Payment Successful!');
+            localStorage.removeItem('cart');
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

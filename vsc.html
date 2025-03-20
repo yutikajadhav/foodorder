@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Ordering</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background: #f8f8f8;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        input {
+            flex: 1;
+            padding: 8px;
+            margin-right: 10px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .card {
+            width: 300px;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .card img {
+            width: 100%;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <input type="text" id="searchBar" placeholder="Search for restaurant and food" onkeyup="searchRestaurants()">
+        <button onclick="sortRestaurants()">Sort By Rating</button>
+    </header>
+    <div class="container" id="foodContainer">
+        <!-- Food items will be dynamically added here -->
+    </div>
+    
+    <script>
+        const foodItems = [
+            { name: "Charcoal Eats", rating: 4.3, time: "35-40 mins", img: "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/FOOD_CATALOG/IMAGES/CMS/2024/9/29/50292730-b59a-4519-8a48-057dc89f93e4_c6b0cf1b-ee74-4376-855b-76531d564602.jpg" },
+            { name: "SP's Biryani House", rating: 4.5, time: "25-30 mins", img: "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/FOOD_CATALOG/IMAGES/CMS/2024/4/14/2a8317be-9d3d-47fd-8c07-04fea898da31_0ebf25ce-452e-4eb1-9f87-f2f01e70512f.jpg" },
+            { name: "Aroma's Hyderabad House", rating: 4.4, time: "20-25 mins", img: "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/lbvogemzw9o9vjpnbjpc" }
+            
+        ];
+
+        function displayItems(items) {
+            const container = document.getElementById("foodContainer");
+            container.innerHTML = "";
+            items.forEach(item => {
+                container.innerHTML += `
+                    <div class="card">
+                        <img src="${item.img}" alt="${item.name}">
+                        <h3>${item.name}</h3>
+                        <p>⭐ ${item.rating} | ${item.time}</p>
+                    </div>
+                `;
+            });
+        }
+
+        function searchRestaurants() {
+            const query = document.getElementById("searchBar").value.toLowerCase();
+            const filtered = foodItems.filter(item => item.name.toLowerCase().includes(query));
+            displayItems(filtered);
+        }
+
+        function sortRestaurants() {
+            const sorted = [...foodItems].sort((a, b) => b.rating - a.rating);
+            displayItems(sorted);
+        }
+
+        displayItems(foodItems);
+    </script>
+</body>
+</html>

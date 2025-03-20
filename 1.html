@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Ordering Website</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f8f8f8;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        input {
+            flex: 1;
+            padding: 8px;
+            margin-right: 10px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px;
+        }
+        .card {
+            width: 300px;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .card img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        .cart {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 10px;
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <input type="text" id="searchBar" placeholder="Search for food..." onkeyup="searchRestaurants()">
+        <button onclick="sortRestaurants()">Sort By Rating</button>
+    </header>
+    <div class="container" id="foodContainer"></div>
+    <div class="cart">
+        <h3>Cart: <span id="cartCount">0</span> items</h3>
+        <button onclick="checkout()">Checkout</button>
+    </div>
+    
+    <script>
+        const foodItems = [
+            { name: "Biryani House", rating: 4.5, time: "25-30 mins", price: 200, img: "image1.jpg" },
+            { name: "Spicy Tandoori", rating: 4.3, time: "30-40 mins", price: 250, img: "image2.jpg" },
+            { name: "Veg Delight", rating: 4.2, time: "20-25 mins", price: 180, img: "image3.jpg" }
+        ];
+        let cart = [];
+
+        function displayItems(items) {
+            const container = document.getElementById("foodContainer");
+            container.innerHTML = "";
+            items.forEach((item, index) => {
+                container.innerHTML += `
+                    <div class="card">
+                        <img src="${item.img}" alt="${item.name}">
+                        <h3>${item.name}</h3>
+                        <p>⭐ ${item.rating} | ${item.time}</p>
+                        <p>₹${item.price}</p>
+                        <button onclick="addToCart(${index})">Add to Cart</button>
+                    </div>
+                `;
+            });
+        }
+
+        function searchRestaurants() {
+            const query = document.getElementById("searchBar").value.toLowerCase();
+            const filtered = foodItems.filter(item => item.name.toLowerCase().includes(query));
+            displayItems(filtered);
+        }
+
+        function sortRestaurants() {
+            const sorted = [...foodItems].sort((a, b) => b.rating - a.rating);
+            displayItems(sorted);
+        }
+
+        function addToCart(index) {
+            cart.push(foodItems[index]);
+            document.getElementById("cartCount").innerText = cart.length;
+        }
+
+        function checkout() {
+            alert(`You have ${cart.length} items in your cart! Proceeding to checkout...`);
+        }
+
+        displayItems(foodItems);
+    </script>
+</body>
+</html>

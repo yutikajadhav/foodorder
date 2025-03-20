@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/cart.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="login.html">Login</a>
+            <a href="signup.html">Signup</a>
+            <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+            <a href="about.html">About Us</a>
+            <a href="feedback.html">Feedback</a>
+        </nav>
+    </header>
+    
+    <h1>Your Cart</h1>
+    <div id="cart-items" class="cart-container"></div>
+    <h2>Total: RS.<span id="total-price">0.00</span></h2>
+    <button class="checkout-btn" onclick="checkout()">Proceed to Payment</button>
+    
+    <script>
+        function updateCartCount() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            document.getElementById('cart-count').innerText = cart.length;
+        }
+        
+        function loadCart() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let cartItemsContainer = document.getElementById('cart-items');
+            let totalPrice = 0;
+            
+            cartItemsContainer.innerHTML = '';
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p class="empty-cart">Your cart is empty.</p>';
+            } else {
+                cart.forEach((item, index) => {
+                    totalPrice += item.price * item.quantity;
+                    cartItemsContainer.innerHTML += `
+                        <div class="cart-item">
+                            <p><strong>${item.name}</strong></p>
+                            <p>Price: ${item.price}</p>
+                            <div class="quantity-controls">
+                                <button class="quantity-btn" onclick="changeQuantity(${index}, -1)">-</button>
+                                <span>${item.quantity}</span>
+                                <button class="quantity-btn" onclick="changeQuantity(${index}, 1)">+</button>
+                            </div>
+                            <p>Subtotal: ${(item.price * item.quantity).toFixed(2)}</p>
+                        </div>
+                    `;
+                });
+            }
+            
+            document.getElementById('total-price').innerText = totalPrice.toFixed(2);
+            updateCartCount();
+        }
+        
+        function changeQuantity(index, change) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            if (cart[index].quantity + change <= 0) {
+                cart.splice(index, 1);
+            } else {
+                cart[index].quantity += change;
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            loadCart();
+        }
+        
+        function checkout() {
+            if (!localStorage.getItem('loggedInUser')) {
+                alert('Please log in to proceed with payment.');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            if (JSON.parse(localStorage.getItem('cart')).length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            
+            window.location.href = 'payment.html';
+        }
+        
+        loadCart();
+    </script>
+</body>
+</html>

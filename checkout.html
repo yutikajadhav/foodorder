@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f8f8f8;
+        }
+        .checkout-container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .total {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: right;
+            margin-top: 10px;
+        }
+        .checkout-btn {
+            width: 100%;
+            padding: 10px;
+            background: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="checkout-container">
+        <h2>Checkout</h2>
+        <div id="cartItems"></div>
+        <p class="total">Total: ₹<span id="totalPrice">0</span></p>
+        <button class="checkout-btn" onclick="placeOrder()">Place Order</button>
+    </div>
+
+    <script>
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        function displayCart() {
+            const cartContainer = document.getElementById("cartItems");
+            const totalPriceElement = document.getElementById("totalPrice");
+            cartContainer.innerHTML = "";
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price;
+                cartContainer.innerHTML += `
+                    <div class="cart-item">
+                        <span>${item.name}</span>
+                        <span>₹${item.price}</span>
+                    </div>
+                `;
+            });
+            totalPriceElement.innerText = total;
+        }
+        function placeOrder() {
+            alert("Your order has been placed successfully!");
+            localStorage.removeItem("cart");
+            window.location.href = "index.html";
+        }
+        displayCart();
+    </script>
+</body>
+</html>

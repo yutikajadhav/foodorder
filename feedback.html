@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/feedback.css">
+    <style>
+        .hidden {
+            display: none;
+        }
+        .success-message {
+            color: green;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="login.html">Login</a>
+            <a href="signup.html">Signup</a>
+            <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+            <a href="about.html">About Us</a>
+            <a href="feedback.html">Feedback</a>
+        </nav>
+    </header>
+    
+    <div class="feedback-container">
+        <h1>Feedback</h1>
+        <p>We value your feedback! Please fill out the form below:</p>
+        
+        <form id="feedback-form">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="email">Your Email</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="message">Your Feedback</label>
+            <textarea id="message" name="message" required></textarea>
+            
+            <button type="submit">Send Feedback</button>
+        </form>
+        
+        <p id="success-message" class="hidden success-message">
+            &#10004; Feedback sent successfully!
+        </p>
+    </div>
+    
+    <script>
+        document.getElementById('feedback-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            var name = document.getElementById('name').value;
+            var email = document.getElementById('email').value;
+            var message = document.getElementById('message').value;
+            
+            var mailtoLink = `mailto:support@foodordering.com?subject=Feedback from ${name}&body=${message}%0D%0A%0D%0AContact: ${email}`;
+            
+            window.location.href = mailtoLink;
+            
+            document.getElementById('success-message').classList.remove('hidden');
+            document.getElementById('feedback-form').reset();
+        });
+    </script>
+</body>
+</html>
